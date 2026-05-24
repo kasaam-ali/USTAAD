@@ -206,7 +206,7 @@ MSG91_AUTH_KEY=your_auth_key
 MSG91_SENDER_ID=USTAAD
 
 # Gemini AI
-GEMINI_API_KEY=AIzaSyB1tNKQIeztj3PKuRsqP27p4GvDIQzq4R4
+GEMINI_API_KEY
 
 # Redis (Optional)
 REDIS_HOST=localhost
