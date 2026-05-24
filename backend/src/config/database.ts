@@ -1,0 +1,48 @@
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const sequelize = new Sequelize({
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5432'),
+  database: process.env.DB_NAME || 'ustaad_db',
+  username: process.env.DB_USER || 'postgres',
+  password: process.env.DB_PASSWORD || '',
+  dialect: 'postgres',
+  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  pool: {
+    max: parseInt(process.env.DB_POOL_MAX || '20'),
+    min: parseInt(process.env.DB_POOL_MIN || '5'),
+    acquire: 30000,
+    idle: 10000,
+  },
+  dialectOptions: {
+    ssl: process.env.DB_SSL === 'true' ? {
+      require: true,
+      rejectUnauthorized: false
+    } : false,
+  },
+  define: {
+    timestamps: true,
+    underscored: true,
+    freezeTableName: true,
+  },
+});
+
+export const connectDatabase = async (): Promise<void> => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ PostgreSQL Database connected successfully');
+
+    if (process.env.NODE_ENV === 'development') {
+      await sequelize.sync({ alter: true });
+      console.log('✅ Database models synchronized');
+    }
+  } catch (error) {
+    console.error('❌ Unable to connect to database:', error);
+    process.exit(1);
+  }
+};
+
+export default sequelize;

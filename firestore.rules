@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+
+    // Validation Blueprint for Specialist
+    function isValidSpecialist(data) {
+      return data.keys().hasAll(['id', 'fullName', 'trade']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.fullName is string && data.fullName.size() <= 100 &&
+             data.trade is string && data.trade.size() <= 50 &&
+             (!data.keys().contains('profilePhotoURL') || (data.profilePhotoURL is string && data.profilePhotoURL.size() <= 1000)) &&
+             (!data.keys().contains('portfolio') || (data.portfolio is list && data.portfolio.size() <= 12));
+    }
+
+    // 1. Specialists Profiles
+    match /specialists/{specialistId} {
+      allow get: if true; // Public profiles
+      allow list: if true; // Public search
+      
+      allow create: if isSignedIn() && isValidId(specialistId) && isValidSpecialist(incoming());
+      
+      allow update: if isOwner(specialistId) && 
+                      isValidSpecialist(incoming()) &&
+                      incoming().id == existing().id && // Immutable ID
+                      (
+                        // Action: Update Profile
+                        incoming().diff(existing()).affectedKeys().hasOnly(['fullName', 'trade', 'profilePhotoURL', 'portfolio', 'minCharge', 'hourlyRate', 'visitCharge', 'experience'])
+                      );
+                      
+      allow delete: if false; // Specialists cannot be deleted via client
+    }
+
+    // 2. Connectivity Test
+    match /test/connection {
+      allow get: if true;
+    }
+  }
+}

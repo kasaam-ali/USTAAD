@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-plus: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+  --font-sans: var(--font-plus);
+  
+  --color-primary: #2563EB;
+  --color-primary-dark: #1E3A8A;
+  --color-primary-deeper: #0F172A;
+  --color-accent: #38BDF8;
+  --color-golden: #F59E0B;
+  --color-available: #34D399;
+  --color-busy: #F87171;
+  --color-pending: #FBBF24;
+  --ease-golden: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  body {
+    @apply text-white/90 min-h-screen selection:bg-accent/30 font-plus;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background: linear-gradient(
+      135deg,
+      #0F172A 0%,
+      #1E3A8A 50%,
+      #0F172A 100%
+    );
+    background-attachment: fixed;
+  }
+
+  body.font-urdu {
+    @apply font-urdu !leading-[2.2];
+    direction: rtl;
+  }
+
+  body.font-urdu * {
+    line-height: 2.2 !important;
+  }
+
+  /* Headings */
+  body.font-urdu h1, 
+  body.font-urdu h2, 
+  body.font-urdu h3,
+  body.font-urdu .text-4xl,
+  body.font-urdu .text-5xl,
+  body.font-urdu [class*="text-"][class*="xl"] {
+    font-size: 26px !important;
+    line-height: 2.2 !important;
+  }
+
+  /* Navbar links */
+  body.font-urdu .nav-link,
+  body.font-urdu nav a,
+  body.font-urdu .navbar a,
+  body.font-urdu header a {
+    font-size: 16px !important;
+  }
+
+  /* Cards text */
+  body.font-urdu .card-text,
+  body.font-urdu [class*="card"] p,
+  body.font-urdu p.text-sm,
+  body.font-urdu p.text-xs {
+    font-size: 17px !important;
+  }
+
+  /* Dashboard words */
+  body.font-urdu .dashboard-stat,
+  body.font-urdu .stat-label,
+  body.font-urdu [class*="stat"] p,
+  body.font-urdu [class*="stat"] span {
+    font-size: 18px !important;
+  }
+
+  body.font-urdu .stat-value {
+    font-size: 24px !important;
+  }
+
+  /* Buttons */
+  body.font-urdu button,
+  body.font-urdu .btn,
+  body.font-urdu [class*="btn-"] {
+    font-size: 16px !important;
+  }
+
+  /* Labels */
+  body.font-urdu label,
+  body.font-urdu .label,
+  body.font-urdu .text-\[10px\],
+  body.font-urdu .text-\[8px\] {
+    font-size: 15px !important;
+  }
+
+  /* Badges/Pills */
+  body.font-urdu .badge,
+  body.font-urdu .pill,
+  body.font-urdu [class*="badge"],
+  body.font-urdu [class*="pill"],
+  body.font-urdu span.text-[8px],
+  body.font-urdu span.text-xs {
+    font-size: 14px !important;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/8 backdrop-blur-[20px] border border-white/12 rounded-[20px];
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 ease-golden;
+  }
+
+  .glass-hover:hover {
+    @apply -translate-y-[6px] scale-[1.02] bg-[rgba(245,158,11,0.06)] border-[rgba(245,158,11,0.9)] brightness-110;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.7), 0 0 50px rgba(245, 158, 11, 0.4), 0 0 90px rgba(245, 158, 11, 0.15), 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .glass-hover:active {
+    @apply -translate-y-[2px] scale-[0.99];
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(245, 158, 11, 0.2), 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-bold transition-all duration-300 ease-golden flex items-center justify-center gap-2 text-white border border-transparent;
+    background: linear-gradient(135deg, #2563EB, #38BDF8);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-[6px] scale-[1.02] brightness-110 border-[rgba(245,158,11,0.95)] text-[#FCD34D];
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(245, 158, 11, 0.2);
+  }
+
+  .btn-primary:active {
+    @apply -translate-y-[2px] scale-[0.99];
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(245, 158, 11, 0.2), 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-glass {
+    @apply px-6 py-3 rounded-xl font-bold backdrop-blur-md border border-white/20 transition-all duration-300 ease-golden text-white flex items-center justify-center gap-2;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .btn-glass:hover {
+    @apply -translate-y-[6px] scale-[1.02] bg-[rgba(245,158,11,0.15)] border-[rgba(245,158,11,0.9)] text-[#FCD34D] brightness-110;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), 0 0 40px rgba(245, 158, 11, 0.2);
+  }
+
+  .btn-glass:active {
+    @apply -translate-y-[2px] scale-[0.99];
+  }
+
+  .nav-link-hover:hover {
+    @apply text-[#FCD34D];
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.8), 0 0 20px rgba(245, 158, 11, 0.4);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+.animate-orb {
+  animation: float 8s ease-in-out infinite;
+}
+
+.radar-circle {
+  @apply rounded-full border border-accent/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+.logo-glow {
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+}

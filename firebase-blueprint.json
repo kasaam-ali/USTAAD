@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Base user profile information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["customer", "worker"] },
+        "isVerified": { "type": "boolean" },
+        "profilePhotoURL": { "type": "string" }
+      },
+      "required": ["id", "fullName", "phone", "role"]
+    },
+    "Specialist": {
+      "title": "Specialist",
+      "description": "Extended profile for workers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["worker"] },
+        "isVerified": { "type": "boolean" },
+        "profilePhotoURL": { "type": "string" },
+        "trade": { "type": "string" },
+        "experience": { "type": "number" },
+        "portfolio": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "caption": { "type": "string" }
+            }
+          }
+        },
+        "minCharge": { "type": "number" },
+        "hourlyRate": { "type": "number" },
+        "visitCharge": { "type": "number" }
+      },
+      "required": ["id", "fullName", "trade"]
+    }
+  },
+  "firestore": {
+    "/specialists/{specialistId}": {
+      "schema": "Specialist",
+      "description": "Profiles for all verified and signed-up workers"
+    },
+    "/test/connection": {
+      "schema": { "type": "object", "properties": {} },
+      "description": "Used to test database connectivity"
+    }
+  }
+}

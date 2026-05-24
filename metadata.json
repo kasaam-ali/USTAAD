@@ -1,0 +1,6 @@
+{
+  "name": "Ustaad",
+  "description": "A modern platform to find and hire skilled workers like electricians, plumbers, and carpenters in Pakistan.",
+  "requestFramePermissions": ["geolocation", "microphone", "camera"],
+  "majorCapabilities": []
+}
